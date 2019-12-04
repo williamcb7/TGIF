@@ -1,10 +1,9 @@
-
-
-
 // VAR INICIALES
 
-const url = "https://api.propublica.org/congress/v1/113/house/members.json";
 
+
+
+const url = "https://api.propublica.org/congress/v1/113/senate/members.json";
 
 
 
@@ -17,54 +16,49 @@ fetch(url,{
     }
 })
 .then(response => {
-    if(response.ok) {
-    return response.json()
+    if(response.ok){
+    return response.json();
     }
     throw new Error()
 })
 .then( data => {
-    let members = data.results[0].members
-    init(members)
+    let members = data.results[0].members;
+    init(members);
+ })
+.catch( error => {
+     console.log("Hay Error", error);
 })
-.catch( error => console.log("Hay Error",error))
 
 
 
 // FUNCION INICIALIZAR BASE DATOS
 
-function init(array) {
-
-    crearListaPerDownMVP(array);
-
-    numRep(array);
-    crearListaPerUpMVP(array)
-    createPerVWP(array)
+function init(members) {
+    
+    crearListaPerUpMVP(members);
+    crearListaPerDownMVP(members);
+    crearNumOfRep(members);
+    createPerVWP(members);
     quitLoader();
-
+    
     }
-
-
-
 
 
 // LISTA LEAST AND MOST LOYALTY
 
-//-- MOST LOYALTY
-function crearListaPerUpMVP(array){
-
-    ListaPerUpVWP = [];
+function crearListaPerUpMVP(array) {
+    var ListaPerUpVWP = [];
 
     var numFrac = Math.round(array.length*0.1);
 
-     for(var i=0; i < numFrac; i++)
+    for(var i=0; i < numFrac; i++)
      {   
-         array.sort(function(a,b){return b.votes_with_party_pct - a.votes_with_party_pct});
+         array.sort(function(a,b){return a.missed_votes_pct - b.missed_votes_pct});
          ListaPerUpVWP.push(array[i]);
      }
+crearRowME(ListaPerUpVWP);    
     
-    crearRowME(ListaPerUpVWP);   
-
- }
+}
 
 
 
@@ -72,20 +66,17 @@ function crearListaPerUpMVP(array){
 //-- LEAST LOYALTY
 
  function crearListaPerDownMVP(array){
+    var ListaPerDownVWP = [];
 
-    ListaPerDownVWP = [];
-     
     var numFrac = Math.round(array.length*0.1);
 
     for(var i=0; i < numFrac; i++)
     {   
-        array.sort(function(a,b){return a.votes_with_party_pct - b.votes_with_party_pct});
+        array.sort(function(a,b){return b.missed_votes_pct - a.missed_votes_pct});
         ListaPerDownVWP.push(array[i]);
     }
-
-    crearRowLE(ListaPerDownVWP);
+    crearRowLE(ListaPerDownVWP)
 }
-
 
 
 // -- CREAR LISTAS
@@ -121,10 +112,10 @@ function crearRowLE (lista){
            
            
             elm_numPV = document.createElement("td");
-            elm_numPV.innerHTML = Math.round(lista[i].total_votes * (lista[i].votes_with_party_pct/100)) + " Votes";
+            elm_numPV.innerHTML = lista[i].missed_votes + " Votes";
             
             elm_perPV = document.createElement("td");
-            elm_perPV.innerHTML = lista[i].votes_with_party_pct +"%";
+            elm_perPV.innerHTML = lista[i].missed_votes_pct +"%";
     
     
             
@@ -164,10 +155,10 @@ function crearRowME (lista){
                
                
                 elm_numPV = document.createElement("td");
-                elm_numPV.innerHTML = Math.round(lista[i].total_votes * (lista[i].votes_with_party_pct/100)) + " Votes";
+                elm_numPV.innerHTML = lista[i].missed_votes + " Votes";
                 
                 elm_perPV = document.createElement("td");
-                elm_perPV.innerHTML = lista[i].votes_with_party_pct +"%";
+                elm_perPV.innerHTML = lista[i].missed_votes_pct +"%";
         
         
                 
@@ -179,7 +170,6 @@ function crearRowME (lista){
             
     }
 
- 
 
 
 // SENATE AT A GLANCE
@@ -195,16 +185,16 @@ var perT = document.getElementById("perT");
 
 //NUMBER OF REPS
 
-    
-    
+MemR = [];
+MemD = [];
+MemI = [];
 
-function numRep(array) {
+function crearNumOfRep(array) {
 
-    MemR = [];
-    MemD = [];
-    MemI = [];    
+
 
     for ( var i=0; i < array.length; i++){
+
         if(array[i].party == "R"){
             MemR.push(array[i]);
         }
@@ -214,32 +204,23 @@ function numRep(array) {
         else if(array[i].party == "I"){
             MemI.push(array[i]);
         }
-    
+
     }
-
-    nR.innerHTML = MemR.length;
-    nD.innerHTML = MemD.length;
-    nI.innerHTML = MemI.length;
-    nT.innerHTML = MemR.length + MemD.length + MemI.length;
-
-   
-
-}
-
-
     
+}
 
 
 
 // PERCENTAGE V/W PARTY
 
-    
+
 
 function createPerVWP(array) {
 
     perWPR = 0;
     perWPD = 0; 
     perWPI = 0;
+
 
     for ( var i=0; i < array.length; i++){
         if(array[i].party == "R"){
@@ -251,16 +232,28 @@ function createPerVWP(array) {
         else if(array[i].party == "I"){
             perWPI = perWPI + (array[i].votes_with_party_pct/MemI.length);
         }
-    
+
     }
 
-    perWPT = ( perWPR + perWPD + perWPI )/3;
+    perWPT =((perWPR*MemR.length)+(perWPD*MemD.length)+(perWPI*MemI.length))/(MemR.length+MemD.length+MemI.length);
 
-    perR.innerHTML = perWPR.toFixed(2)+" %";
-    perD.innerHTML = perWPD.toFixed(2)+" %";
-    perI.innerHTML = perWPI.toFixed(2)+" %";
-    perT.innerHTML = perWPT.toFixed(2)+" %";
+
+nR.innerHTML = MemR.length;
+nD.innerHTML = MemD.length;
+nI.innerHTML = MemI.length;
+nT.innerHTML = MemR.length + MemD.length + MemI.length;
+perR.innerHTML = perWPR.toFixed(2)+" %";
+perD.innerHTML = perWPD.toFixed(2)+" %";
+perI.innerHTML = perWPI.toFixed(2)+" %";
+perT.innerHTML = perWPT.toFixed(2)+" %";
+    
 }
+
+
+
+
+
+
 
 
 // //LOADER IMAGES
@@ -274,32 +267,16 @@ function createPerVWP(array) {
 
 
 
-//OCULTAR LOADER
+    //OCULTAR LOADER
 
     function quitLoader() {
 
-        loadTime = document.getElementById("loader").style.display = "none" ;
+        var loadTime = document.getElementById("loader");
+        loadTime.style.display = "none";
         
-    }
+     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 

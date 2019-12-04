@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="Estilos_Attendance.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> 
+    </head>
+    
+    <body>
+      
+    <div id="loader">
+                    <img src="space.gif" alt="Loader..">
+    </div>
+        
+    <div class="contenedor">
+
+        <header>
+                        <div class="head_box_1">        
+                            <img src="logo_TGIF.png" alt="logo" height="110" width="302">
+                        </div>
+                        <div class="head_box_2">   
+                            <div>
+                                <img src="logo_mail.png" alt="logo" height="50" width="50">
+                            </div> 
+                            <div class="mail">
+                                <a href="mailto:info@Tgif.com">info@Tgif.com</a>
+                            </div>    
+                        </div>
+        </header>
+            
+        <nav>
+                            <ul class="nvl">
+                                   <li><a href="index.html">Home</a></li>
+                                   <li><a href="#">Congress 113</a>
+                                       <ul>
+                                           <li><a href="House_Congress.html">House</a></li>
+                                           <li><a href="Senate_Congress.html">Senate</a></li>
+                                       </ul>
+                                   </li>    
+                                   <li><a href="#">Attendance</a>
+                                    <ul>
+                                            <li><a href="house-attendance-starter-page.html">House</a></li>
+                                            <li><a href="senate-attendance-starter-page.html">Senate</a></li>
+                                        </ul>
+                                    </li>
+                                   <li><a href="#">Party Loyalty</a>
+                                    <ul>
+                                            <li><a href="house-loyalty-starter-page.html">House</a></li>
+                                            <li><a href="senate-loyalty-starter-page.html">Senate</a></li>
+                                        </ul>
+                                </li>
+                            </ul>
+        </nav>     
+
+        <div class="box">
+
+            <div class="Cgrs">
+                <h2>Party Loyalty</h2>
+                <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans respectively, tend to be the most faithful in voting for their party's nominee for office and legislation that backs their party's agenda. </p>
+            </div>
+
+            <div class="tb1">
+                    <h2>House at a glance</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Party</th>
+                                <th>Number of Reps</th>
+                                <th>% Voted with Prty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Republican</td>
+                                <td id="nR"></td>
+                                <td id="perR"></td>
+                            </tr>
+                            <tr>
+                                <td>Democrat</td>
+                                <td id="nD"></td>
+                                <td id="perD"></td>
+                            </tr>
+                            <tr>
+                                <td>Independent</td>
+                                <td id="nI"></td>
+                                <td id="perI"></td>
+                            </tr>
+                            <tr>
+                                    <td>Total</td>
+                                    <td id="nT"></td>
+                                    <td id="perT"></td>
+                                </tr>
+                        </tbody>
+                    </table>
+            </div>
+
+            <div class="barFilter">
+                
+            </div>
+
+            <div class="tLeast">
+                    <h2>Least Loyal (Bottom 10% of Party)</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Number Party Votes</th>
+                                <th>% Party Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tLeastBody">
+                               
+                        </tbody>
+                    </table>
+            </div>
+    
+            <div class="tMost">
+                    <h2>Most Loyal (Top 10% of Party)</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Number Party Votes</th>
+                                <th>% Party Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tMostBody">
+                                
+                        </tbody>
+                    </table>
+            </div>
+
+
+        </div>
+
+        <footer>
+                <p><b>&#169; 2016 TGIF | All Rights Reserved</b></p>
+        </footer>
+
+    </div>  
+ <script src="pro-Congress-113-house.js"></script>     
+ <script src="Estadistics_Loyalty.js"></script>     
+</body>
+</html>
